@@ -7,5 +7,6 @@ To add to your `/etc/pacman.conf`, add (at the end):
 ```
 [toxl-repo]
 SigLevel = Never
-Server = https://github.com/T0x1cL/toxl-repo/raw/master/$arch/
+Server = https://toxl-repo.netlify.app/$arch
 ```
+downloads are quite slow (~300KiB/s) but it works i guess
