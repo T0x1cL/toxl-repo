@@ -9,8 +9,6 @@ url="https://github.com/ItzFireable/VsCamellia"
 license=('Apache')
 depends=()
 makedepends=('git' 'haxe')
-provides=('funkin')
-conflicts=('funkin')
 source=("$pkgname"::"git+https://github.com/ItzFireable/VsCamellia.git")
 sha512sums=('SKIP')
 
