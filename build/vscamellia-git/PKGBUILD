@@ -1,0 +1,102 @@
+# Maintainer: toxL <letxcl@gmail.com>
+# Contributor: Elijah Bansley <elijahbansley@gmail.com>
+pkgname=vscamellia-git
+pkgver=1.1.r55.gbf0b7c4
+pkgrel=1
+pkgdesc="Build and install the Friday Night Funkin' Camellia Mod with shortcuts"
+arch=('x86_64')
+url="https://github.com/ItzFireable/VsCamellia"
+license=('Apache')
+depends=()
+makedepends=('git' 'haxe')
+provides=('funkin')
+conflicts=('funkin')
+source=("$pkgname"::"git+https://github.com/ItzFireable/VsCamellia.git")
+sha512sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+prepare() {
+    cd "$srcdir/$pkgname"
+    git submodule update --init
+}
+
+build() {
+    cd "$srcdir/$pkgname"
+    mkdir -p ~/haxelib
+    haxelib setup ~/haxelib
+    haxelib install lime 7.9.0
+    haxelib install openfl
+    haxelib install flixel
+    haxelib run lime setup <<EOF
+y
+EOF
+    haxelib run lime setup flixel
+    haxelib install flixel-tools
+    haxelib run flixel-tools setup <<EOF
+y
+4
+EOF
+    haxelib install flixel-ui
+    haxelib install flixel-addons
+    haxelib install hscript
+    haxelib install linc_luajit
+    haxelib install actuate
+    haxelib install newgrounds
+    haxelib git polymod https://github.com/larsiusprime/polymod.git
+    haxelib git extension-webm https://github.com/KadeDev/extension-webm.git
+    lime rebuild extension-webm linux
+    haxelib git faxe https://github.com/uhrobots/faxe.git
+    haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+    cat <<EOF > $srcdir/$pkgname/source/APIStuff.hx
+package;
+
+class APIStuff
+{
+    public static var API:String = "51348:TtzK0rZ8";
+    public static var EncKey:String = "5NqKsSVSNKHbF9fPgZPqPg==";
+}
+EOF
+    lime build linux -final
+}
+
+check() {
+    cd "$srcdir/$pkgname"
+    #make -k check
+}
+
+package() {
+    cd "$srcdir/$pkgname"
+	
+    install -dm755 "$pkgdir/usr/share/vscamellia"
+    cp -R $srcdir/$pkgname/export/release/linux/bin/* "$pkgdir/usr/share/vscamellia/"
+	
+    cat <<EOF > $srcdir/$pkgname/vscamellia.sh
+#!/bin/bash
+pushd /usr/share/vscamellia > /dev/null
+./'vs. Camellia'
+popd > /dev/null
+EOF
+	
+    install -D $srcdir/$pkgname/vscamellia.sh $pkgdir/usr/bin/vscamellia
+	
+    cat <<EOF > $srcdir/$pkgname/vscamellia.desktop
+[Desktop Entry]
+Version=1.1
+Name=Friday Night Funkin (Camellia Mod)
+GenericName=Rhythm Game
+Comment=FNF Camellia Mod
+Type=Application
+Terminal=false
+Exec=vscamellia
+Icon=vscamellia
+Categories=Game
+Keywords=game;funkin;friday;fridaynight;night;camellia;mod;
+EOF
+
+    install -D $srcdir/$pkgname/art/iconOG.png $pkgdir/usr/share/pixmaps/vscamellia.png
+    install -D $srcdir/$pkgname/vscamellia.desktop $pkgdir/usr/share/applications/vscamellia.desktop
+}
