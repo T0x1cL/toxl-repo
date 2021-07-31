@@ -26,7 +26,9 @@ build() {
     cd "$srcdir/$pkgname"
     mkdir -p ~/haxelib
     haxelib setup ~/haxelib
-    haxelib install lime 7.9.0
+    haxelib install lime 7.9.0 <<EOF
+y
+EOF
     haxelib install openfl
     haxelib install flixel
     haxelib run lime setup <<EOF
@@ -48,7 +50,9 @@ EOF
     haxelib git extension-webm https://github.com/KadeDev/extension-webm.git
     lime rebuild extension-webm linux
     haxelib git faxe https://github.com/uhrobots/faxe.git
-    haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+    haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc <<EOF
+y
+EOF
     cat <<EOF > $srcdir/$pkgname/source/APIStuff.hx
 package;
 
