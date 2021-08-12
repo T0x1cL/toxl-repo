@@ -1,0 +1,19 @@
+# Maintainer: T0x1cL <letxcl@gmail.com>
+pkgname=otf-w95fa
+pkgver=0.0.0
+pkgrel=1
+pkgdesc='A modern re-creation of MS Sans Serif — the default sans font in Windows 95, Windows NT, and Windows ME'
+arch=('any')
+url=https://fontsarena.com/w95fa-by-fontsarena/
+license=('custom:OFL')
+provides=('otf-w95fa')
+source=('https://raw.githubusercontent.com/alinacsava/W95FA/master/otf/W95FA.otf'
+        'https://raw.githubusercontent.com/alinacsava/W95FA/master/OFL.txt')
+sha256sums=('9e1ad53708307b2b68e06d43799b2267f6aec620dda972bc62753ad16ba50f2b'
+            'ce243fd4a62b1b76c959ffba6ec16a7a3146b2362d441ae4f9f7f32fc3750d6c')
+
+package() {
+    install -Dm644 -t "$pkgdir/usr/share/fonts/OTF" *.otf
+    install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" OFL.txt
+}
+

@@ -1,0 +1,25 @@
+# Maintainer: T0x1cL <letxcl@gmail.com>
+pkgname=ttf-i.ming-font-family
+pkgver=7.01
+pkgrel=1
+pkgdesc="A Chinese/Japanese font following an inherited character standardisation document's recommended standards."
+arch=('any')
+url=https://github.com/ichitenfont/I.Ming
+license=('custom:IPA')
+provides=('ttf-i.ming-font-family')
+source=('https://raw.githubusercontent.com/ichitenfont/I.Ming/master/7.01/I.Ming-7.01.ttf'
+        'https://raw.githubusercontent.com/ichitenfont/I.Ming/master/7.01/I.MingCP-7.01.ttf'
+        'https://raw.githubusercontent.com/ichitenfont/I.Ming/master/7.01/I.MingVar-7.01.ttf'
+        'https://raw.githubusercontent.com/ichitenfont/I.Ming/master/7.01/I.MingVarCP-7.01.ttf'
+        'https://raw.githubusercontent.com/ichitenfont/I.Ming/master/LICENSE.md')
+sha256sums=('2891af6848500aee27aa9eb2513d61064889b1709a88a3de53a522ac8ad98417'
+            'bc0359afc168956f21070d820146438b56930cdfdadb1affdd64de37bcd4147b'
+            '9b1c44632b3e1b28c4ee7ffbd5088d3a7e93d4abdfb9cb22e3a739477ee9e96a'
+            'e2158f82c8ab4f00cc12faea9a2b33b5c24441cefc9bfc4a319c1538b67061dc'
+            '03ce5b4617efeb59711684b6ff2a8ef01f43b70d7d05f6e4e364e7e59539414e')
+
+package() {
+    install -Dm644 -t "$pkgdir/usr/share/fonts/TTF" *.ttf
+    install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE.md
+}
+
